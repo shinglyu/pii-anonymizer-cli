@@ -15,22 +15,9 @@ A command-line tool for anonymizing personally identifiable information (PII) in
 ### Installation options
 
 ```bash
-# Create a virtual environment (recommended)
-uv venv
-
-# Activate the virtual environment
-source .venv/bin/activate
-
-# OPTION 1: Install the package in development mode (editable)
-# This allows you to modify the code and see changes without reinstalling
-uv pip install -e .
-
-# OPTION 2: Install the package normally
-# Use this for regular usage without code changes
-uv pip install .
-
-# Download the required spaCy model
-uv run -m spacy download en_core_web_sm
+git clone https://github.com/shinglyu/pii-anonymizer-cli.git
+cd pii-anonymizer-cli
+uv tool install . # the binary `anonymize` is available
 ```
 
 ## Usage
