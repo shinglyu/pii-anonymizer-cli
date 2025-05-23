@@ -27,6 +27,7 @@ cat input.txt | anonymize > anonymized.txt
 
 # Process direct input
 echo "Hello, my name is John Doe and my email is john@example.com" | anonymize
+# STDOUT: Hello, my name is <PERSON> and my email is <EMAIL_ADDRESS> 
 ```
 
 ## Development
