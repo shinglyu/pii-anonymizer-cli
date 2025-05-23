@@ -8,7 +8,6 @@ A command-line tool for anonymizing personally identifiable information (PII) in
 - Follows UNIX principles (works with pipes)
 - Uses spaCy NLP models
 - Built with Microsoft Presidio framework
-- Supports pseudonymization for consistent entity replacement
 
 ## Installation
 
