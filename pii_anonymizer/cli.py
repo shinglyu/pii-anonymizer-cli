@@ -20,9 +20,11 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
         description="Anonymize personally identifiable information (PII) in text"
     )
     parser.add_argument(
-        "-l", "--language", 
-        default="en",
-        help="Language of the input text (default: %(default)s)"
+        "-m", "--model",
+        default="en_core_web_sm",
+        help="spaCy model to use for NLP processing (default: %(default)s). "
+             "The model name determines the language (e.g., en_core_web_sm for English, "
+             "de_core_news_sm for German). See available models at: https://spacy.io/models"
     )
     parser.add_argument(
         "-i", "--input",
@@ -55,7 +57,7 @@ def main(args: Optional[List[str]] = None) -> int:
     text = parsed_args.input.read()
     
     # Anonymize the text
-    anonymized_text = anonymize_text(text, language=parsed_args.language)
+    anonymized_text = anonymize_text(text, model=parsed_args.model)
     
     # Write the output
     parsed_args.output.write(anonymized_text)

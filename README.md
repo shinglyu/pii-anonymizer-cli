@@ -27,8 +27,19 @@ cat input.txt | anonymize > anonymized.txt
 
 # Process direct input
 echo "Hello, my name is John Doe and my email is john@example.com" | anonymize
-# STDOUT: Hello, my name is <PERSON> and my email is <EMAIL_ADDRESS> 
+
+# Use a different spaCy model (defaults to en_core_web_sm)
+echo "Hallo, mein Name ist Hans Mueller" | anonymize --model de_core_news_sm
+
+# See all available options
+anonymize --help
 ```
+
+### Command Line Options
+
+- `-m, --model MODEL`: spaCy model to use for NLP processing (default: `en_core_web_sm`). The model name determines the language. See [available spaCy models](https://spacy.io/models) for supported languages and model sizes.
+- `-i, --input INPUT`: Input file (default: stdin)
+- `-o, --output OUTPUT`: Output file (default: stdout)
 
 ## Development
 

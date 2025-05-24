@@ -10,18 +10,21 @@ from typing import List, Optional
 class PIIAnonymizer:
     """Class to handle PII anonymization using Presidio."""
     
-    def __init__(self, language: str = "en"):
-        """Initialize the anonymizer with the specified language.
+    def __init__(self, model: str = "en_core_web_sm"):
+        """Initialize the anonymizer with the specified spaCy model.
         
         Args:
-            language: Language code to use for the NLP model
+            model: spaCy model name to use (e.g., 'en_core_web_sm', 'de_core_news_sm')
         """
-        self.language = language
-        # Initialize the analyzer engine with configuration to use the small model
+        self.model = model
+        # Extract language code from model name (e.g., 'en' from 'en_core_web_sm')
+        self.language = model.split('_')[0] if '_' in model else model[:2]
+        
+        # Initialize the analyzer engine with configuration to use the specified model
         from presidio_analyzer.nlp_engine import NlpEngineProvider
         configuration = {
             "nlp_engine_name": "spacy",
-            "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}]
+            "models": [{"lang_code": self.language, "model_name": self.model}]
         }
         provider = NlpEngineProvider(nlp_configuration=configuration)
         nlp_engine = provider.create_engine()
@@ -31,12 +34,12 @@ class PIIAnonymizer:
         
         # Make sure spaCy model is downloaded
         try:
-            spacy.load("en_core_web_sm")
+            spacy.load(self.model)
         except OSError:
             # If the model is not found, download it
             import sys
-            print("Downloading spaCy model...", file=sys.stderr)
-            spacy.cli.download("en_core_web_sm")
+            print(f"Downloading spaCy model '{self.model}'...", file=sys.stderr)
+            spacy.cli.download(self.model)
     
     def anonymize(self, text: str) -> str:
         """Anonymize PII in the given text.
@@ -73,30 +76,30 @@ class PIIAnonymizer:
 _default_anonymizer = None
 
 
-def get_anonymizer(language: str = "en") -> PIIAnonymizer:
+def get_anonymizer(model: str = "en_core_web_sm") -> PIIAnonymizer:
     """Get or create a global anonymizer instance.
     
     Args:
-        language: Language code to use
+        model: spaCy model name to use
         
     Returns:
         A PIIAnonymizer instance
     """
     global _default_anonymizer
     if _default_anonymizer is None:
-        _default_anonymizer = PIIAnonymizer(language)
+        _default_anonymizer = PIIAnonymizer(model)
     return _default_anonymizer
 
 
-def anonymize_text(text: str, language: str = "en") -> str:
+def anonymize_text(text: str, model: str = "en_core_web_sm") -> str:
     """Anonymize PII in the given text.
     
     Args:
         text: The text to anonymize
-        language: Language code to use
+        model: spaCy model name to use
         
     Returns:
         The anonymized text
     """
-    anonymizer = get_anonymizer(language)
+    anonymizer = get_anonymizer(model)
     return anonymizer.anonymize(text)
