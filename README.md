@@ -27,9 +27,12 @@ cat input.txt | anonymize > anonymized.txt
 
 # Process direct input
 echo "Hello, my name is John Doe and my email is john@example.com" | anonymize
+# Output: Hello, my name is <PERSON> and my email is <EMAIL_ADDRESS>
 
 # Use a different spaCy model (defaults to en_core_web_sm)
-echo "Text in another language" | anonymize --model different_model
+echo "Hallo, mijn naam is Jan de Vries en mijn email is jan@voorbeeld.nl" | anonymize --model nl_core_news_sm
+# Output: <PERSON>, mijn naam is <PERSON> en mijn email is <PERSON>
+# Note: it's not as accurate as English due to the size of the model and training data
 
 # Process with file input/output
 anonymize --input input.txt --output anonymized.txt
